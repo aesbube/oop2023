@@ -34,7 +34,6 @@ void najdobar_park(ZabavenPark ff[100], int n) {
 		for (j = 0; j < ff[i].k; j++) {
 			if (ff[i].niza[j].daliPopust) {
 				temp[i]++;
-				//maxTraenje[i]+=ff[i].niza[j].traenje;
 			}
 			maxTraenje[i] += ff[i].niza[j].traenje;
 		}
@@ -55,7 +54,7 @@ void najdobar_park(ZabavenPark ff[100], int n) {
 
 int main()
 {
-	int i, j, n;
+	int i, j, n, broj;
 	//kreiraj niza od maksimum 100 zabavni parkovi
 	ZabavenPark ff[100];
 	scanf("%d", &n);
