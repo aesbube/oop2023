@@ -26,13 +26,17 @@ void pecatiFaktura(Narachka n) {
         }
     }
     Proizvod temp;
+    int temp1 = 0;
     if (flag) {
         for (int i = 0; i < n.n - 1; ++i) {
             for (int j = 0; j < n.n - 1 - i; ++j) {
                 if (strcmp(n.proizvodi[j].code, n.proizvodi[j + 1].code) > 0) {
                     temp = n.proizvodi[j];
+                    //temp1 = n.numberOfProducts[j];
                     n.proizvodi[j] = n.proizvodi[j + 1];
+                    //n.numberOfProducts[j] = n.numberOfProducts[j + 1];
                     n.proizvodi[j + 1] = temp;
+                    //n.numberOfProducts[j + 1] = temp1;
                 }
             }
         }
