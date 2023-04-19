@@ -4,159 +4,176 @@
 using namespace std;
 
 class Gitara {
-    char type[40];
-    char serialNumber[25];
-    int yearOfProduction;
+private:
+    char serial[25];
     double price;
+    int year;
+    char type[40];
+
+    void copy(const Gitara &other) {
+        strcpy(this->serial, other.serial);
+        this->price = other.price;
+        this->year = other.year;
+        strcpy(this->type, other.type);
+    }
 
 public:
-    Gitara(const char *type = "", const char *serialNumber = "", int yearOfProduction = 0, double price = 0) {
-        strcpy(this->type, type);
-        strcpy(this->serialNumber, serialNumber);
+    Gitara(char *type = "", char *serial = "", int year = 0, double price = 0.0) {
+        strcpy(this->serial, serial);
         this->price = price;
-        this->yearOfProduction = yearOfProduction;
-//        cout<<"default"<<endl;
+        this->year = year;
+        strcpy(this->type, type);
     }
 
     Gitara(const Gitara &other) {
-//        cout<<"copy"<<endl;
-        strncpy(this->type, other.type, 40);
-        strncpy(this->serialNumber, other.serialNumber, 25);
-        this->yearOfProduction = other.yearOfProduction;
-        this->price = other.price;
+        copy(other);
     }
 
+    ~Gitara() {}
+
     Gitara &operator=(const Gitara &other) {
-//        cout<<"operator"<<endl;
-        strncpy(this->type, other.type, 40);
-        strncpy(this->serialNumber, other.serialNumber, 25);
-        this->yearOfProduction = other.yearOfProduction;
-        this->price = other.price;
+        if (this != &other) {
+            copy(other);
+        }
         return *this;
     }
 
-
-    ~Gitara() {
+    const char *getSeriski() const {
+        return serial;
     }
 
-    bool daliIsti(Gitara &other) {
-        return strcmp(this->serialNumber, other.serialNumber) == 0;
+    const double getNabavna() const {
+        return price * 1.0;
     }
 
-    void pecati() {
-        cout << serialNumber << " " << type << " " << price << endl;
+    const int getGodina() const {
+        return year;
     }
 
-    const char *getType() const {
+    const char *getTip() const {
         return type;
     }
 
-    const char *getSerialNumber() const {
-        return serialNumber;
+    bool daliIsti(Gitara &gitara) {
+        return (strcmp(gitara.serial, this->serial) == 0);
     }
 
-    int getYearOfProduction() const {
-        return yearOfProduction;
+    void pecati() {
+        cout << serial << " " << type << " " << price << endl;
     }
-
-    double getPrice() const {
-        return price;
-    }
-
 };
 
 class Magacin {
-    char name[50];
+private:
+    char name[30];
     char location[60];
-    Gitara *array;
+    Gitara *gitari;
     int number;
-    int yearOfOpening;
+    int year;
+
+    void copy(const Magacin &other) {
+        strcpy(this->name, other.name);
+        strcpy(this->location, other.location);
+        this->gitari = new Gitara[other.number];
+        for (int i = 0; i < other.number; i++) {
+            this->gitari[i] = other.gitari[i];
+        }
+        this->number = other.number;
+        this->year = other.year;
+    }
 
 public:
-    Magacin(const char *name = "", const char *location = "", int yearOfOpening = 0) {
+    Magacin(char *name = "", char *location = "", int year = 0, Gitara *gitari = 0, int number = 0) {
         strcpy(this->name, name);
         strcpy(this->location, location);
-        this->yearOfOpening = yearOfOpening;
-        array = NULL;
-        number = 0;
-//        cout<<"default"<<endl;
+        this->gitari = new Gitara[number];
+        for (int i = 0; i < number; i++) {
+            this->gitari[i] = gitari[i];
+        }
+        this->number = number;
+        this->year = year;
     }
 
     Magacin(const Magacin &other) {
-//        cout<<"copy"<<endl;
-        strcpy(this->name, other.name);
-        strcpy(this->location, other.location);
-        this->yearOfOpening = other.yearOfOpening;
-        array = new Gitara[other.number];
-        for (int i = 0; i < other.number; ++i) {
-            this->array[i] = other.array[i];
-        }
-        this->number = other.number;
-    }
-
-    Magacin &operator=(const Magacin &other) {
-//        cout<<"operator"<<endl;
-        delete[] array;
-        strcpy(this->name, other.name);
-        strcpy(this->location, other.location);
-        this->yearOfOpening = other.yearOfOpening;
-        array = new Gitara[other.number];
-        for (int i = 0; i < other.number; ++i) {
-            array[i] = other.array[i];
-        }
-        this->number = other.number;
-        return *this;
+        copy(other);
     }
 
     ~Magacin() {
-        delete[] array;
+        delete[] gitari;
     }
 
-    double Vrednost() {
-        double temp = 0;
-        for (int i = 0; i < number; ++i) {
-            temp += array[i].getPrice();
+    Magacin &operator=(const Magacin &other) {
+        if (this != &other) {
+            delete[] gitari;
+            copy(other);
         }
-        return temp;
+        return *this;
     }
 
-    void dodadi(Gitara other) {
-        Gitara *temp = new Gitara[number + 1];
-        for (int i = 0; i < number; ++i) {
-            temp[i] = array[i];
+    const char *getName() const {
+        return name;
+    }
+
+    const char *getLocation() const {
+        return location;
+    }
+
+    Gitara *getGitari() const {
+        return gitari;
+    }
+
+    int getNumber() const {
+        return number;
+    }
+
+    int getYear() const {
+        return year;
+    }
+
+    double vrednost() {
+        double zbir = 0;
+        for (int i = 0; i < number; i++) {
+            zbir += gitari[i].getNabavna();
         }
-        temp[number++] = other;
-        delete[] array;
-        array = temp;
+        return zbir;
     }
 
-    void prodadi(Gitara other) {
-        int t = 0;
+    void dodadi(Gitara d) {
+        Gitara *tmp = new Gitara[number + 1];
+        for (int i = 0; i < number; i++) {
+            tmp[i] = gitari[i];
+        }
+        tmp[number++] = d;
+        delete[] gitari;
+        gitari = tmp;
+    }
 
+    void prodadi(Gitara p) {
+        int a = 0;
         for (int i = 0; i < number; ++i) {
-            if (array[i].daliIsti(other) == false) {
-                t++;
+            if (p.daliIsti(gitari[i]) == false) a++;
+        }
+        Gitara *tmp = new Gitara[number - 1];
+        int j = 0;
+        for (int i = 0; i < number; i++) {
+            if (p.daliIsti(gitari[i]) == false) {
+                tmp[j] = gitari[i];
+                j++;
             }
         }
-        Gitara *temp = new Gitara[t];
-        int k = 0;
-        for (int i = 0; i < number; ++i) {
-            if (array[i].daliIsti(other) == false) {
-                temp[k] = array[i];
-                k++;
-            }
-        }
-        delete[] array;
-        array = temp;
-        number = t;
+        delete[] gitari;
+        gitari = tmp;
+        number = a;
     }
 
     void pecati(bool daliNovi) {
         cout << name << " " << location << endl;
         for (int i = 0; i < number; ++i) {
-            if (daliNovi == true && array[i].getYearOfProduction() > yearOfOpening) {
-                array[i].pecati();
-            } else if (daliNovi == false) array[i].pecati();
+            if (daliNovi && gitari[i].getGodina() > year) {
+                gitari[i].pecati();
+            } else if (daliNovi == false) {
+                gitari[i].pecati();
+            }
         }
     }
 };
@@ -177,10 +194,10 @@ int main() {
         cin >> godina;
         cin >> cena;
         Gitara g(tip, seriski, godina, cena);
-        cout << g.getType() << endl;
-        cout << g.getSerialNumber() << endl;
-        cout << g.getYearOfProduction() << endl;
-        cout << g.getPrice() << endl;
+        cout << g.getTip() << endl;
+        cout << g.getSeriski() << endl;
+        cout << g.getGodina() << endl;
+        cout << g.getNabavna() << endl;
     } else if (testCase == 2) {
         cout << "===== Testiranje na klasata Magacin so metodot print() ======" << endl;
         Magacin kb("Magacin1", "Lokacija1");
@@ -258,10 +275,10 @@ int main() {
                 brisi = g;
             kb.dodadi(g);
         }
-        cout << kb.Vrednost() << endl;
+        cout << kb.vrednost() << endl;
         kb.prodadi(brisi);
         cout << "Po brisenje:" << endl;
-        cout << kb.Vrednost();
+        cout << kb.vrednost();
         Magacin kb3;
         kb3 = kb;
     }
