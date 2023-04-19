@@ -27,6 +27,54 @@ void print(ITStore array[], int n) {
     }
 }
 
+//void najeftina_ponuda(ITStore array[], int n) {
+//    int temp[100];
+//    int maxi = 0;
+//    for (int i = 0; i < n; ++i) {
+//        int temp1[100];
+//        int maxj = 0;
+//        for (int j = 0; j < array[i].number; ++j) {
+//            if (array[i].array[j].touch) {
+//                temp1[j] = array[i].array[j].price;
+//            } else temp1[j] = 0;
+//        }
+//        for (int j = 0; j < array[i].number; ++j) {
+//            int max;
+//            for (int i = 0; i < array[i].number; ++i) {
+//                if (temp1[i] != 0) {
+//                    max = temp1[i];
+//                    break;
+//                }
+//            }
+//            for (int k = 0; k < array[i].number; ++k) {
+//                if (temp1[k] > 0) {
+//                    if (max > temp1[k]) {
+//                        max = temp1[k];
+//                        maxj = k;
+//                    }
+//                }
+//            }
+//        }
+//        if (array[i].array[maxj].touch) { temp[i] = array[i].array[maxj].price; }
+//    }
+//    int max;
+//    for (int i = 0; i < n; ++i) {
+//        if (temp[i] != 0) {
+//            max = temp[i];
+//            break;
+//        }
+//    }
+//    for (int i = 0; i < n; ++i) {
+//        if (max > temp[i]) {
+//            max = temp[i];
+//            maxi = i;
+//        }
+//        //printf("%d\n", max);
+//    }
+//    printf("Najeftina ponuda ima prodavnicata:\n%s %s\nNajniskata cena iznesuva: %d", array[maxi].nameOfStore,
+//           array[maxi].location, max);
+//}
+
 void najeftina_ponuda(ITStore array[], int n) {
     int max = INT_MAX;
     int maxi = 0;
